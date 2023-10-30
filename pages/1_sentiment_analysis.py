@@ -22,15 +22,15 @@ import streamlit as st
 import os
 
 avatars={"system":"💻","user":"🧑","assistant":"🧠"}
-openai.api_key = os.environ['OPENAI_API_KEY']
+if 'OPENAI_API_KEY' in os.environ:
+    openai.api_key = os.environ['OPENAI_API_KEY']
+else:
+    openai.api_key = st.secrets['OPENAI_API_KEY']
 
 SYSTEM_MESSAGE={"role": "system", 
                 "content": """
-                You are responsible for analyzing users' input along the following dimensions.
-                1. Is the overall tone friendly, jovial, sad, happy, threatening, or hateful?
-                2. Will the speech be considered hate speech especially by a protected group?
-                3. Is this tweet acceptable in professional workplace setting?
-                Raise an alert if the speech qualifies as hate speech.
+                You are responsible for analyzing users' input to figure out if the speaker is stressed.
+                If the speaker is stressed, please also suggest how they may de-stress.
                 """
                 }
 
