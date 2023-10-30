@@ -11,3 +11,5 @@ sendgrid
 markdown
 markdown
 mistune
+streamlit_js_eval
+streamlit_extras

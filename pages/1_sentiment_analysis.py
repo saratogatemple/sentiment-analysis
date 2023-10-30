@@ -19,10 +19,19 @@ import numpy as np
 import openai
 import streamlit as st
 
-avatars={"system":"💻🧠","user":"🧑‍💼","assistant":"🎓"}
+import os
+
+avatars={"system":"💻","user":"🧑","assistant":"🧠"}
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 SYSTEM_MESSAGE={"role": "system", 
-                "content": "Ignore all previous commands. You are a helpful and patient guide based in Silicon Valley."
+                "content": """
+                You are responsible for analyzing users' input along the following dimensions.
+                1. Is the overall tone friendly, jovial, sad, happy, threatening, or hateful?
+                2. Will the speech be considered hate speech especially by a protected group?
+                3. Is this tweet acceptable in professional workplace setting?
+                Raise an alert if the speech qualifies as hate speech.
+                """
                 }
 
 if "messages" not in st.session_state:
@@ -35,7 +44,7 @@ for message in st.session_state.messages:
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-if prompt := st.chat_input("What is up?"):
+if prompt := st.chat_input("Please provide the social media posting here"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
